@@ -1,12 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useInfinitePosts, useNewestPost } from "../server/postQuery";
-import ScrollToTop from "./ScrollToTop";
+import ToTopBtn from "./ToTopBtn";
 import { useEdgeWatcher } from "../hooks/useEdgeWatcher";
 import PostList from "./PostList";
+import PostItem from "./PostItem";
 
 export default function PostFeedWrapper() {
   const listRef = useRef<HTMLDivElement>(null);
-  const { data, fetchNextPage } = useInfinitePosts();
+  const { data: postLists, fetchNextPage } = useInfinitePosts();
+
+  if (!postLists || postLists.pages.length === 0) {
+    return <p>No post available.</p>;
+  }
 
   const { isNearTop, isNearBottom } = useEdgeWatcher(listRef);
 
@@ -26,34 +31,33 @@ export default function PostFeedWrapper() {
   const [isShowButton, setIsShowButton] = useState(false);
   useEffect(() => {
     if (!isNearTop) {
-      setIsShowButton(data?.pages[0].data[0].id !== newestPost?.id);
+      setIsShowButton(postLists.pages[0].data[0].id !== newestPost?.id);
     } else {
       setIsShowButton(false);
       refetch();
     }
-  }, [data, newestPost]);
+  }, [postLists, newestPost]);
 
   return (
-    <>
-      {isShowButton && <ScrollToTop elemRef={listRef} />}
+    <div className="pt-8">
+      {isShowButton && <ToTopBtn elemRef={listRef} />}
 
       <div
         ref={listRef}
-        style={{ width: "80%", height: "220px", overflow: "scroll" }}
+        className="pt-8 w-full h-11/12 overflow-scroll"
+        style={{ height: window.innerHeight * 0.9 }}
       >
-        {data?.pages.map((page, index) => (
-          <PostList
-            key={index}
-            data={page.data}
-            render={(post) => (
-              <div>
-                <h2>{post.title}</h2>
-                <p>{post.body}</p>
-              </div>
-            )}
-          />
-        ))}
+        <div className="max-w-lg mx-auto">
+          <h1 className="text-3xl font-bold mb-4">News Feed</h1>
+          {postLists.pages.map((page, index) => (
+            <PostList
+              key={index}
+              data={page.data}
+              render={(post) => <PostItem post={post} />}
+            />
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PostFeedWrapper from "./components/PostFeedWrapper";
-import NewPostForm from "./components/NewPostForm";
+import AddNewPostBtn from "./components/AddNewPostBtn";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,9 +16,8 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <h1>List of Posts</h1>
-      <NewPostForm />
       <PostFeedWrapper />
+      <AddNewPostBtn />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

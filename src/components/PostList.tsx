@@ -6,15 +6,5 @@ type PostListProps = {
   render: (item: DisplayedPost) => ReactElement;
 };
 export default function PostList({ data, render }: PostListProps) {
-  if (!data || data.length === 0) {
-    return <p>No post available.</p>;
-  }
-
-  return (
-    <>
-      {data.map((item) => (
-        <div key={item.id}>{render(item)}</div>
-      ))}
-    </>
-  );
+  return data.map((item) => <div key={item.id}>{render(item)}</div>);
 }
