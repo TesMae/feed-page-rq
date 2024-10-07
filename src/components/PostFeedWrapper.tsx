@@ -7,10 +7,10 @@ import PostItem from "./PostItem";
 
 export default function PostFeedWrapper() {
   const listRef = useRef<HTMLDivElement>(null);
-  const { data: postLists, fetchNextPage } = useInfinitePosts();
+  const { data: postLists, fetchNextPage, isError, error } = useInfinitePosts();
 
-  if (!postLists || postLists.pages.length === 0) {
-    return <p>No post available.</p>;
+  if (isError) {
+    return <p>Error: {error.message}</p>;
   }
 
   const { isNearTop, isNearBottom } = useEdgeWatcher(listRef);
@@ -31,7 +31,7 @@ export default function PostFeedWrapper() {
   const [isShowButton, setIsShowButton] = useState(false);
   useEffect(() => {
     if (!isNearTop) {
-      setIsShowButton(postLists.pages[0].data[0].id !== newestPost?.id);
+      setIsShowButton(postLists?.pages[0].data[0].id !== newestPost?.id);
     } else {
       setIsShowButton(false);
       refetch();
@@ -49,7 +49,7 @@ export default function PostFeedWrapper() {
       >
         <div className="max-w-lg mx-auto">
           <h1 className="text-3xl font-bold mb-4">News Feed</h1>
-          {postLists.pages.map((page, index) => (
+          {postLists?.pages.map((page, index) => (
             <PostList
               key={index}
               data={page.data}

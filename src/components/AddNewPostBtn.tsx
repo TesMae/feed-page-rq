@@ -1,6 +1,6 @@
 import React from "react";
 import { useAddPost } from "../server/postQuery";
-import { postTitles, postBodies } from "../../db/postFixture";
+import { postTitles, postBodies } from "../../db/postOptions";
 
 export default function AddNewPostBtn() {
   const mutation = useAddPost();
