@@ -48,7 +48,7 @@ export default function PostFeedWrapper() {
         style={{ height: window.innerHeight * 0.9 }}
       >
         <div className="max-w-lg mx-auto">
-          <h1 className="text-3xl font-bold mb-4">News Feed</h1>
+          <h1 className="text-3xl font-bold mb-4">Feed Posts</h1>
           {postLists?.pages.map((page, index) => (
             <PostList
               key={index}
