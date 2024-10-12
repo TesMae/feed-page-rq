@@ -21,7 +21,7 @@ export default function PostFeedWrapper() {
     }
   }, [isNearBottom]);
 
-  const { data: newestPost, refetch } = useNewestPost();
+  const { data: prevNewestPost, refetch } = useNewestPost();
   useEffect(() => {
     if (isNearTop) {
       refetch();
@@ -31,12 +31,12 @@ export default function PostFeedWrapper() {
   const [isShowButton, setIsShowButton] = useState(false);
   useEffect(() => {
     if (!isNearTop) {
-      setIsShowButton(postLists?.pages[0].data[0].id !== newestPost?.id);
+      setIsShowButton(postLists?.pages[0].data[0].id !== prevNewestPost?.id);
     } else {
       setIsShowButton(false);
       refetch();
     }
-  }, [postLists, newestPost]);
+  }, [postLists, prevNewestPost]);
 
   return (
     <div className="pt-8">
