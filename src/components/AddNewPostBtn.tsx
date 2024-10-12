@@ -1,4 +1,3 @@
-import React from "react";
 import { useAddPost } from "../server/postQuery";
 import { postTitles, postBodies } from "../../db/postOptions";
 

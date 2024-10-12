@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfinitePosts, useNewestPost } from "../server/postQuery";
 import ToTopBtn from "./ToTopBtn";
 import { useEdgeWatcher } from "../hooks/useEdgeWatcher";
@@ -22,11 +22,6 @@ export default function PostFeedWrapper() {
   }, [isNearBottom]);
 
   const { data: prevNewestPost, refetch } = useNewestPost();
-  useEffect(() => {
-    if (isNearTop) {
-      refetch();
-    }
-  }, [isNearTop]);
 
   const [isShowButton, setIsShowButton] = useState(false);
   useEffect(() => {
@@ -36,7 +31,7 @@ export default function PostFeedWrapper() {
       setIsShowButton(false);
       refetch();
     }
-  }, [postLists, prevNewestPost]);
+  }, [postLists, prevNewestPost, isNearTop]);
 
   return (
     <div className="pt-8">
